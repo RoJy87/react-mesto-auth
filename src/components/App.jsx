@@ -4,7 +4,7 @@ import Header from "./Header";
 import Main from "./Main";
 import ImagePopup from "./ImagePopup";
 import Spinner from "./Spinner";
-import { api } from "./utils/Api";
+import { api } from "../utils/Api";
 import { CurrentUserContext } from "../contexts/CurrentUserContext";
 import EditProfilePopup from "./EditProfilePopup";
 import EditAvatarPopup from "./EditAvatarPopup";
@@ -14,7 +14,7 @@ import Login from "./Login";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import InfoTooltip from "./InfoTooltip";
-import * as Auth from "./utils/Auth";
+import * as Auth from "../utils/Auth";
 import Navbar from "./Navbar";
 
 function App() {
@@ -45,35 +45,39 @@ function App() {
     if (localStorage.getItem("token")) {
       const token = localStorage.getItem("token");
       if (token) {
-        Auth.getAuthInfo(token).then((res) => {
-          if (res) {
-            const userEmail = res.data.email;
-            setEmail(userEmail);
-            setLoggedIn(true);
-            navigate("/", { replace: true });
-          }
-        });
+        Auth.getAuthInfo(token)
+          .then((res) => {
+            if (res) {
+              const userEmail = res.data.email;
+              setEmail(userEmail);
+              setLoggedIn(true);
+              navigate("/", { replace: true });
+            }
+          })
+          .catch((err) => console.log(err));
       }
     }
   }
 
   useEffect(() => {
-    loadingSpinner(true);
-    Promise.all([api.getUserInfo(), api.getItems()])
-      .then(([userData, cardData]) => {
-        setCurrentUser({
-          name: userData.name,
-          about: userData.about,
-          avatar: userData.avatar,
-          id: userData._id,
+    if (loggedIn) {
+      loadingSpinner(true);
+      Promise.all([api.getUserInfo(), api.getItems()])
+        .then(([userData, cardData]) => {
+          setCurrentUser({
+            name: userData.name,
+            about: userData.about,
+            avatar: userData.avatar,
+            id: userData._id,
+          });
+          setCards(cardData);
+        })
+        .catch((err) => console.log(err))
+        .finally(() => {
+          loadingSpinner(false);
         });
-        setCards(cardData);
-      })
-      .catch((err) => console.log(err))
-      .finally(() => {
-        loadingSpinner(false);
-      });
-  }, []);
+    }
+  }, [loggedIn]);
 
   function loadingSpinner(isLoading) {
     setSpinnerPopupOpen(isLoading);
@@ -192,12 +196,13 @@ function App() {
             setSuccessful(true);
             setInfoTooltipPopupOpen(true);
             navigate("/sign-in", { replace: true });
-          } else {
-            setSuccessful(false);
-            setInfoTooltipPopupOpen(true);
           }
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          setSuccessful(false);
+          setInfoTooltipPopupOpen(true);
+          console.log(err);
+        })
         .finally(() => {
           setLoadingButton(false);
         });
@@ -213,16 +218,18 @@ function App() {
     Auth.authorize(email, password)
       .then((data) => {
         if (data.token) {
+          localStorage.setItem("token", data.token);
           setEmail(email);
           setValues({ email: "", password: "" });
           setLoggedIn(true);
           navigate("/", { replace: true });
-        } else {
-          setSuccessful(false);
-          setInfoTooltipPopupOpen(true);
         }
       })
-      .catch((err) => console.log(err))
+      .catch((err) => {
+        setSuccessful(false);
+        setInfoTooltipPopupOpen(true);
+        console.log(err);
+      })
       .finally(() => {
         setLoadingButton(false);
       });
@@ -320,6 +327,11 @@ function App() {
             onClose={closeAllPopups}
             name="info-tooltip"
             isSuccessful={successful}
+            message={
+              successful
+                ? "Вы успешно зарегистрировались!"
+                : "Что-то пошло не так! Попробуйте ещё раз."
+            }
           />
           <DeletePlacePopup
             card={deletedCard}

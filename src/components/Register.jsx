@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
-import { password } from "./utils/constants";
+import { password } from "../utils/constants";
 import { Link } from "react-router-dom";
 
 function Register({ isLoadingButton, onRegister }) {
@@ -83,7 +83,7 @@ function Register({ isLoadingButton, onRegister }) {
           {buttonName}
         </button>
         <span className="link">
-          Уже зарегистрированы?
+          Уже зарегистрированы?{" "}
           <Link className="link button" to="/sign-in">
             Войти
           </Link>

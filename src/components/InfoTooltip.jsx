@@ -26,7 +26,7 @@ function InfoTooltip(props) {
               alt="Регистрация успешна"
               className="confirm__image"
             />
-            <p className="confirm__message">Вы успешно зарегистрировались!</p>
+            <p className="confirm__message">{props.message}</p>
           </div>
         )}
         {!props.isSuccessful && (
@@ -36,9 +36,7 @@ function InfoTooltip(props) {
               alt="Ошибка регистрации"
               className="confirm__image"
             />
-            <p className="confirm__message">
-              Что-то пошло не так! Попробуйте ещё раз.
-            </p>
+            <p className="confirm__message">{props.message}</p>
           </div>
         )}
       </div>
