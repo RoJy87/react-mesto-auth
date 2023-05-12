@@ -2,6 +2,12 @@
   text-decoration: none;
   color: #A9A9A9;
   font-weight: 400;
-  font-size: 18px;
+  font-size: 14px;
   line-height: 1.22;
+}
+
+@media (min-width: 768px) {
+  .header__link {
+    font-size: 18px;
+  }
 }

@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 function Navbar({ email, onSignOut, isMenuVisible }) {
   const path = useLocation().pathname;
@@ -23,16 +23,6 @@ function Navbar({ email, onSignOut, isMenuVisible }) {
             Выйти
           </button>
         </div>
-      )}
-      {path === "/sign-in" && (
-        <Link className="header__link button" to="/sign-up">
-          Регистрация
-        </Link>
-      )}
-      {path === "/sign-up" && (
-        <Link className="header__link button" to="/sign-in">
-          Войти
-        </Link>
       )}
     </div>
   );

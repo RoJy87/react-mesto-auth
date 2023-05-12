@@ -1,5 +1,4 @@
-/* import { Link, useLocation } from "react-router-dom"; */
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import logo from "../image/logo.svg";
 
 function Header({ onClickMenu, isMenuVisible }) {
@@ -20,6 +19,16 @@ function Header({ onClickMenu, isMenuVisible }) {
           <span className="bar-mid"></span>
           <span className="bar-bot"></span>
         </button>
+      )}
+      {path === "/sign-in" && (
+        <Link className="header__link button" to="/sign-up">
+          Регистрация
+        </Link>
+      )}
+      {path === "/sign-up" && (
+        <Link className="header__link button" to="/sign-in">
+          Войти
+        </Link>
       )}
     </header>
   );

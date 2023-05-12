@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFormAndValidation } from "../hooks/useFormAndValidation";
-import { password } from "./utils/constants";
+import { password } from "../utils/constants";
 
 function Login({ isLoadingButton, onLogin }) {
   const [buttonName, setButtonName] = useState("");
