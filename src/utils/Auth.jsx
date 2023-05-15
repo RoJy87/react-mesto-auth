@@ -14,21 +14,8 @@ export const register = (email, password) => {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({
-      password: password,
-      email: email,
-    }),
-  })
-    .then((response) => {
-      try {
-        if (response.status === 200 || response.status === 201) {
-          return response;
-        }
-      } catch (e) {
-        return e;
-      }
-    })
-    .then(getResponseData);
+    body: JSON.stringify({ email, password }),
+  }).then(getResponseData);
 };
 
 export const authorize = (email, password) => {
