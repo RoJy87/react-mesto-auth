@@ -1,4 +1,6 @@
-export const BASE_URL = "https://simon.mesto.nomoreparties.sbs";
+import { urlRequest } from "../utils/constants";
+
+const BASE_URL = urlRequest.baseUrl;
 
 const getResponseData = (res) => {
   if (!res.ok) {
