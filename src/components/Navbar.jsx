@@ -10,10 +10,10 @@ function Navbar({ email, onSignOut, isMenuVisible }) {
   return (
     <div
       className={`header__title ${
-        path === "/" && isMenuVisible && "header__title_active"
+        path === "/main" && isMenuVisible && "header__title_active"
       }`}
     >
-      {path === "/" && (
+      {path === "/main" && (
         <div className="header__menu">
           <span className="header__email">{email}</span>
           <button
