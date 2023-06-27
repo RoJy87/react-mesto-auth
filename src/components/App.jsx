@@ -195,7 +195,7 @@ function App() {
           if (res) {
             setSuccessful(true);
             setInfoTooltipPopupOpen(true);
-            navigate("/sign-in", { replace: true });
+            navigate("/signin", { replace: true });
           }
         })
         .catch((err) => {
@@ -238,7 +238,7 @@ function App() {
   function handleSignout() {
     localStorage.removeItem("token");
     setLoggedIn(false);
-    navigate("/sign-in", { replace: true });
+    navigate("/signin", { replace: true });
   }
 
   const handleClickMenu = () => {
@@ -260,14 +260,14 @@ function App() {
               path="/"
               element={
                 loggedIn ? (
-                  <Navigate to="/" replace />
+                  <Navigate to="/main" replace />
                 ) : (
-                  <Navigate to="/sign-in" replace />
+                  <Navigate to="/signin" replace />
                 )
               }
             />
             <Route
-              path="/"
+              path="/main"
               element={
                 <ProtectedRoute
                   isLoggedIn={loggedIn}
@@ -284,7 +284,7 @@ function App() {
               }
             />
             <Route
-              path="/sign-in"
+              path="/signin"
               element={
                 <Login
                   isLoadingButton={isLoadingButton}
@@ -293,7 +293,7 @@ function App() {
               }
             />
             <Route
-              path="/sign-up"
+              path="/signup"
               element={
                 <Register
                   onRegister={handleRegister}

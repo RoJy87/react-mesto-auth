@@ -1,4 +1,4 @@
-export const BASE_URL = "https://auth.simon.mesto.nomoreparties.sbs";
+export const BASE_URL = "https://simon.mesto.nomoreparties.sbs";
 
 const getResponseData = (res) => {
   if (!res.ok) {

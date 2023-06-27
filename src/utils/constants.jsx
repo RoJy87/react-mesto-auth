@@ -1,6 +1,5 @@
 export const urlRequest = {
   baseUrl: "https://simon.mesto.nomoreparties.sbs/",
-  mestoUrl: "https://simon.mesto.nomoreparties.sbs/",
   userUrl: "https://simon.mesto.nomoreparties.sbs/users/me",
   cardsUrl: "https://simon.mesto.nomoreparties.sbs/cards",
   changeAvatarUrl: "https://simon.mesto.nomoreparties.sbs/users/me/avatar",
