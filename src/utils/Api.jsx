@@ -4,6 +4,7 @@ class Api {
   constructor({ url, headers, credentials }) {
     this._url = url;
     this._headers = headers;
+    this._credentials = credentials;
   }
 
   _checkResponse = (res) => {
@@ -16,6 +17,7 @@ class Api {
   // получить данные пользователя (GET)
   getUserInfo() {
     return fetch(`${this._url.userUrl}`, {
+      credentials: this._credentials,
       headers: this._headers,
     }).then(this._checkResponse);
   }
@@ -24,6 +26,7 @@ class Api {
   setUserInfo(body) {
     return fetch(`${this._url.userUrl}`, {
       method: "PATCH",
+      credentials: this._credentials,
       headers: this._headers,
       body: JSON.stringify({
         name: body.name,
@@ -36,6 +39,7 @@ class Api {
   setUserAvatar(body) {
     return fetch(`${this._url.changeAvatarUrl}`, {
       method: "PATCH",
+      credentials: this._credentials,
       headers: this._headers,
       body: JSON.stringify({
         avatar: body.avatar,
@@ -46,6 +50,7 @@ class Api {
   // получить список всех карточек в виде массива (GET)
   getItems() {
     return fetch(`${this._url.cardsUrl}`, {
+      credentials: this._credentials,
       headers: this._headers,
     }).then(this._checkResponse);
   }
@@ -58,6 +63,7 @@ class Api {
         name: body.name,
         link: body.link,
       }),
+      credentials: this._credentials,
       headers: this._headers,
     }).then(this._checkResponse);
   }
@@ -66,6 +72,7 @@ class Api {
   deleteCard(id) {
     return fetch(`${this._url.cardsUrl}/${id}`, {
       method: "DELETE",
+      credentials: this._credentials,
       headers: this._headers,
     }).then(this._checkResponse);
   }
@@ -74,6 +81,7 @@ class Api {
   changeLikeCardStatus(id, isLiked) {
     return fetch(`${this._url.cardsUrl}/${id}/likes`, {
       method: `${isLiked ? "DELETE" : "PUT"}`,
+      credentials: this._credentials,
       headers: this._headers,
     }).then(this._checkResponse);
   }
@@ -81,6 +89,7 @@ class Api {
 
 export const api = new Api({
   url: urlRequest,
+  credentials: "include",
   headers: {
     authorization: token,
     "Content-Type": "application/json",
