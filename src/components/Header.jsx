@@ -9,7 +9,7 @@ function Header({ onClickMenu, isMenuVisible }) {
   return (
     <header className="header">
       <img src={logo} alt="Логотип Место" className="header__logo" />
-      {path === "/react-mesto-auth" && (
+      {path === "/" && (
         <button
           type="button"
           onClick={handleClickMenu}
