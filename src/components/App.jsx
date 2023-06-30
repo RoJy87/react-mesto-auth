@@ -36,7 +36,6 @@ function App() {
   const [successful, setSuccessful] = useState(false);
 
   const navigate = useNavigate();
-  console.log(process.env);
 
   useEffect(() => {
     loadingSpinner(true);
@@ -55,7 +54,7 @@ function App() {
         }
       })
       .catch((err) => console.log(err))
-      .finally(() => loadingSpinner(false));
+      .finally(() => loadingSpinner(false))
   }, [loggedIn]);
 
   function loadingSpinner(isLoading) {
