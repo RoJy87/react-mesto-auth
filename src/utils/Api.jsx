@@ -1,4 +1,4 @@
-import { token, urlRequest } from "./constants";
+import { urlRequest } from "./constants";
 
 class Api {
   constructor({ url, headers, credentials }) {
@@ -91,7 +91,6 @@ export const api = new Api({
   url: urlRequest,
   credentials: "include",
   headers: {
-    authorization: token,
     "Content-Type": "application/json",
   },
 });
