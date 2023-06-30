@@ -36,47 +36,26 @@ function App() {
   const [successful, setSuccessful] = useState(false);
 
   const navigate = useNavigate();
+  console.log(process.env);
 
   useEffect(() => {
-    tokenCheck();
-  }, []);
-
-  function tokenCheck() {
-    if (localStorage.getItem("token")) {
-      const token = localStorage.getItem("token");
-      if (token) {
-        Auth.getAuthInfo(token)
-          .then((res) => {
-            if (res) {
-              const userEmail = res.data.email;
-              setEmail(userEmail);
+    loadingSpinner(true);
+    Auth.getAuthInfo()
+      .then((res) => {
+        if (res) {
+          Promise.all([api.getUserInfo(), api.getItems()]).then(
+            ([userData, cardData]) => {
+              setCurrentUser(userData);
+              setCards(cardData);
+              setEmail(userData.email);
               setLoggedIn(true);
               navigate("/", { replace: true });
             }
-          })
-          .catch((err) => console.log(err));
-      }
-    }
-  }
-
-  useEffect(() => {
-    if (loggedIn) {
-      loadingSpinner(true);
-      Promise.all([api.getUserInfo(), api.getItems()])
-        .then(([userData, cardData]) => {
-          setCurrentUser({
-            name: userData.name,
-            about: userData.about,
-            avatar: userData.avatar,
-            id: userData._id,
-          });
-          setCards(cardData);
-        })
-        .catch((err) => console.log(err))
-        .finally(() => {
-          loadingSpinner(false);
-        });
-    }
+          );
+        }
+      })
+      .catch((err) => console.log(err))
+      .finally(() => loadingSpinner(false));
   }, [loggedIn]);
 
   function loadingSpinner(isLoading) {
@@ -150,13 +129,12 @@ function App() {
       });
   }
 
-  function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser.id);
+  function handleCardLike(card, isLiked) {
     api
       .changeLikeCardStatus(card._id, isLiked)
       .then((newCard) => {
         setCards((cards) =>
-          cards.map((c) => (c._id === newCard._id ? newCard : c))
+          cards.map((c) => (c._id === card._id ? newCard : c))
         );
       })
       .catch((err) => console.log(err));
@@ -217,8 +195,7 @@ function App() {
     const { email, password } = values;
     Auth.authorize(email, password)
       .then((data) => {
-        if (data.token) {
-          localStorage.setItem("token", data.token);
+        if (data) {
           setEmail(email);
           setValues({ email: "", password: "" });
           setLoggedIn(true);
@@ -236,7 +213,7 @@ function App() {
   }
 
   function handleSignout() {
-    localStorage.removeItem("token");
+    Auth.logout();
     setLoggedIn(false);
     navigate("/signin", { replace: true });
   }
