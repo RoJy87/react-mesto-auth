@@ -43,14 +43,14 @@ function App() {
       .then((res) => {
         if (res) {
           Promise.all([api.getUserInfo(), api.getItems()]).then(
-            ([userData, cardData]) => {
-              setCurrentUser(userData);
-              setCards(cardData);
-              setEmail(userData.email);
-              setLoggedIn(true);
-              navigate("/", { replace: true });
-            }
-          );
+          ([userData, cardData]) => {
+            setCurrentUser(userData);
+            setCards(cardData);
+            setEmail(userData.email);
+            setLoggedIn(true);
+            navigate("/", { replace: true });
+          }
+        );
         }
       })
       .catch((err) => console.log(err))
